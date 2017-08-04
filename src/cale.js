@@ -13,6 +13,7 @@ function Calendar() {
     this.currentMonths = new Date().getMonth() + 1;
     this.currentDates = new Date().getDate();
     this.currentYMD = this.currentYears + "" + (parseInt(this.currentMonths - 1) < 10 ? "0" + parseInt(this.currentMonths) : parseInt(this.currentMonths - 1)) + "" + (parseInt(this.currentDates) < 10 ? "0" + parseInt(this.currentDates) : parseInt(this.currentDates))
+   
     //不变动时间
     this.presentYears = new Date().getFullYear();
     this.presentMonths = new Date().getMonth() + 1;
@@ -21,48 +22,7 @@ function Calendar() {
     this.currentDayTasks = {};
     this.days = [];
     this.dayHaveTask = new Set();
-    this.todoLists = {
-        // "20170623": {
-        //     "20170623162456": {
-        //         text: "吃饭",
-        //         finish: true
-        //     },
-        //     "20170623102576": {
-        //         text: "睡觉",
-        //         finish: false
-        //     }
-        // },
-        // "20170727": {
-        //     "20170727102456": {
-        //         text: "吃饭",
-        //         finish: true
-        //     },
-        //     "20170727102476": {
-        //         text: "睡觉",
-        //         finish: false
-        //     }
-        // },
-        // "20170728": {
-        //     "20170728102426": {
-        //         text: "喝水",
-        //         finish: true
-        //     },
-        //     "20170728102476": {
-        //         text: "吃药",
-        //         finish: false
-        //     }
-        // },
-        // "20170729": {
-        //     "20170729102826": {
-        //         text: "123",
-        //         finish: false
-        //     },
-        //     "20170729102476": {
-        //         text: "456",
-        //         finish: false
-        //     }
-        // }
-    };
+    this.todoLists = {};
     this.init();
     this.todolistRender();
     document.getElementById("curToday").click();
@@ -71,7 +31,6 @@ function Calendar() {
 
 Calendar.prototype.init = function () {
     const _this = this;
-
     //时钟开始
     _this.timeToggle();
     setInterval(function () {
@@ -91,12 +50,11 @@ Calendar.prototype.init = function () {
     //将信息存入LocalStorage
     _this.insertLocalStorage();
 
-
     //日期被点击时加个边框，设置todo里的星期，从localstorage读取任务，然后渲染todolist否则显示无事件
     dayUl.addEventListener("click", function (e) {
         if (e.target && e.target.nodeName == "LI") {
             //遍历所有日期li，去掉select-day
-            const _dayLi = dayUl.childNodes;
+            let _dayLi = dayUl.childNodes;
             for (let i = _dayLi.length - 1; i >= 0; i--) {
                 if (_dayLi[i].className.indexOf("select-day") != -1) {
                     _dayLi[i].classList.remove("select-day")
